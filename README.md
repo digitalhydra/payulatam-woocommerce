@@ -1,5 +1,6 @@
 PayU-Latam-Gateway-for-Woocommerce
 ==================================
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/codeisintheair/payulatam-woocommerce?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 PayU Latinoamérica Payment Gateway for WooCommerce. Recibe pagos en internet en Latinoamérica desde cualquier parte del mundo.
 
