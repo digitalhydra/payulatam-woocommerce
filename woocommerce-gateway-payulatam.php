@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce - PayU Latam Gateway
 Plugin URI: http://thecodeisintheair.com/wordpress-plugins/woocommerce-payu-latam-gateway-plugin/
 Description: PayU Latinoamerica Payment Gateway for WooCommerce. Recibe pagos en internet en latinoamérica desde cualquier parte del mundo. ¡La forma más rápida, sencilla y segura para vender y recibir pagos por internet!
-Version: 1.1.2
+Version: 1.1.6
 Author: Code is in the Air - Jairo Ivan Rondon Mejia
 Author URI: http://www.thecodeisintheair.com/
 License: GNU General Public License v3.0
@@ -51,6 +51,7 @@ function woocommerce_payulatam_init(){
 			$this->testmerchant_id	= '500238';
 			$this->testaccount_id	= '500537';
 			$this->testapikey		= '6u39nqhq8ftd0hlvnjfs66eh8c';
+			$this->debug = "no";
 			
 			$this->title 			= $this->settings['title'];
 			$this->description 		= $this->settings['description'];
@@ -58,13 +59,21 @@ function woocommerce_payulatam_init(){
 			$this->account_id 		= ($this->testmode=='yes')?$this->testaccount_id:$this->settings['account_id'];
 			$this->apikey 			= ($this->testmode=='yes')?$this->testapikey:$this->settings['apikey'];
 			$this->redirect_page_id = $this->settings['redirect_page_id'];
+			$this->endpoint 		= $this->settings['endpoint'];
 			$this->payu_language 	= $this->settings['payu_language'];
 			$this->taxes 			= $this->settings['taxes'];
 			$this->tax_return_base 	= $this->settings['tax_return_base'];
 			$this->currency 		= ($this->is_valid_currency())?get_woocommerce_currency():'USD';
 			$this->textactive 		= 0;
+			$this->form_method 		= $this->settings['form_method'];
 			$this->liveurl 			= 'https://gateway.payulatam.com/ppp-web-gateway/';
 			$this->testurl 			= 'https://stg.gateway.payulatam.com/ppp-web-gateway';
+
+			/* mesagges */
+			$this->msg_approved			= $this->settings['msg_approved'];
+			$this->msg_declined			= $this->settings['msg_declined'];
+			$this->msg_cancel 			= $this->settings['msg_cancel'];
+			$this->msg_pending			= $this->settings['msg_pending'];
 
 			if ($this->testmode == "yes")
 				$this->debug = "yes";
@@ -75,8 +84,14 @@ function woocommerce_payulatam_init(){
 			$this->msg['message'] 	= "";
 			$this->msg['class'] 	= "";
 			// Logs
-			if ( 'yes' == $this->debug )
-				$this->log = $woocommerce->logger();
+			if ( 'yes' == $this->debug ){
+				if(version_compare( WOOCOMMERCE_VERSION, '2.1', '>=')){
+					$this->log = new WC_Logger();
+				}else{
+					$this->log = $woocommerce->logger();
+				}
+			}
+			
 					
 			add_action('payulatam_init', array( $this, 'pauylatam_successful_request'));
 			add_action( 'woocommerce_receipt_payulatam', array( $this, 'receipt_page' ) );
@@ -198,6 +213,14 @@ function woocommerce_payulatam_init(){
 					'description' 	=> __('PayU Latam Gateway Language ', 'payu-latam-woocommerce'),
 					'desc_tip' 		=> true
                 ),
+      			'form_method' => array(
+					'title' 		=> __('Form Method', 'payu-latam-woocommerce'),
+					'type' 			=> 'select',
+					'default' 		=> 'POST',
+					'options' 		=> array('POST' => 'POST', 'GET' => 'GET'),
+					'description' 	=> __('Checkout form submition method ', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
+                ),
       			'redirect_page_id' => array(
 					'title' 		=> __('Return Page', 'payu-latam-woocommerce'),
 					'type' 			=> 'select',
@@ -205,13 +228,41 @@ function woocommerce_payulatam_init(){
 					'description' 	=> __('URL of success page', 'payu-latam-woocommerce'),
 					'desc_tip' 		=> true
                 ),
-                'empty_cart' => array(
-					'title' 		=> __('Empty Cart after payment completed.', 'payu-latam-woocommerce'),
-					'type' 			=> 'checkbox',
-					'label' 		=> __('Do you want empty the user shopping cart after the payment is complete?.', 'payu-latam-woocommerce'),
-					'default' 		=> 'no',
-					'description' 	=> __('Do you want empty the user shopping cart after the payment is complete?.', 'payu-latam-woocommerce')
-				),
+                'endpoint' => array(
+					'title' 		=> __('Page End Point (Woo > 2.1)', 'payu-latam-woocommerce'),
+					'type' 			=> 'text',
+					'default' 		=> '',
+					'description' 	=> __('Return Page End Point.', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
+		        ),
+      			'msg_approved' => array(
+					'title' 		=> __('Message for approved transaction', 'payu-latam-woocommerce'),
+					'type' 			=> 'text',
+					'default' 		=> __('PayU Latam Payment Approved', 'payu-latam-woocommerce'),
+					'description' 	=> __('Message for approved transaction', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
+                ),
+      			'msg_pending' => array(
+					'title' 		=> __('Message for pending transaction', 'payu-latam-woocommerce'),
+					'type' 			=> 'text',
+					'default' 		=> __('Payment pending', 'payu-latam-woocommerce'),
+					'description' 	=> __('Message for pending transaction', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
+                ),
+      			'msg_cancel' => array(
+					'title' 		=> __('Message for cancel transaction', 'payu-latam-woocommerce'),
+					'type' 			=> 'text',
+					'default' 		=> __('Transaction Canceled.', 'payu-latam-woocommerce'),
+					'description' 	=> __('Message for cancel transaction', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
+                ),
+      			'msg_declined' => array(
+					'title' 		=> __('Message for declined transaction', 'payu-latam-woocommerce'),
+					'type' 			=> 'text',
+					'default' 		=> __('Payment rejected via PayU Latam.', 'payu-latam-woocommerce'),
+					'description' 	=> __('Message for declined transaction ', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
+                ),
 			);
                 
 		} 
@@ -240,22 +291,22 @@ function woocommerce_payulatam_init(){
 			if($this->description) echo wpautop(wptexturize($this->description));
 		}
 		/**
-		* Generate the PayU Latam Form for checkout
-	    *
-	    * @access public
-	    * @param mixed $order
-	    * @return string
+		 * Generate the PayU Latam Form for checkout
+	     *
+	     * @access public
+	     * @param mixed $order
+	     * @return string
 		**/
 		function receipt_page($order){
 			echo '<p>'.__('Thank you for your order, please click the button below to pay with PayU Latam.', 'payu-latam-woocommerce').'</p>';
 			echo $this->generate_payulatam_form($order);
 		}
 		/**
-		* Generate PayU POST arguments
-	    *
-	    * @access public
-	    * @param mixed $order_id
-	    * @return string
+		 * Generate PayU POST arguments
+	     *
+	     * @access public
+	     * @param mixed $order_id
+	     * @return string
 		**/
 		function get_payulatam_args($order_id){
 			global $woocommerce;
@@ -266,11 +317,12 @@ function woocommerce_payulatam_init(){
 			//For wooCoomerce 2.0
 			$redirect_url = add_query_arg( 'wc-api', get_class( $this ), $redirect_url );
 			$redirect_url = add_query_arg( 'order_id', $order_id, $redirect_url );
+			$redirect_url = add_query_arg( '', $this->endpoint, $redirect_url );
 
 			$productinfo = "Order $order_id";
 			
 				$str = "$this->apikey~$this->merchant_id~$txnid~$order->order_total~$this->currency";
-				$hash = strtolower(md5( $str));
+				$hash = strtolower(md5($str));
 			
 			
 			$payulatam_args = array(
@@ -295,20 +347,20 @@ function woocommerce_payulatam_init(){
 				'responseUrl' 		=> $redirect_url,
 				'confirmationUrl'	=> $redirect_url,
 				'tax' 				=> $this->taxes,
-				'taxReturnBase'		=> $this->tax_return,
+				'taxReturnBase'		=> $this->tax_return_base,
 				'extra1'			=> $order->order_id,
 				'discount' 			=> '0'
 			);
 			return $payulatam_args;
 		}
 
-		 /**
+		/**
 		 * Generate the PayU Latam button link
 	     *
 	     * @access public
 	     * @param mixed $order_id
 	     * @return string
-	     */
+	    */
 	    function generate_payulatam_form( $order_id ) {
 			global $woocommerce;
 
@@ -326,9 +378,7 @@ function woocommerce_payulatam_init(){
 			foreach ($payulatam_args as $key => $value) {
 				$payulatam_args_array[] = '<input type="hidden" name="'.esc_attr( $key ).'" value="'.esc_attr( $value ).'" />';
 			}
-
-			$woocommerce->add_inline_js( '
-				jQuery("body").block({
+			$code='jQuery("body").block({
 						message: "' . esc_js( __( 'Thank you for your order. We are now redirecting you to PayU Latam to make payment.', 'payu-latam-woocommerce' ) ) . '",
 						baseZ: 99999,
 						overlayCSS:
@@ -347,10 +397,15 @@ function woocommerce_payulatam_init(){
 					        lineHeight:		"24px",
 					    }
 					});
-				jQuery("#submit_payulatam_payment_form").click();
-			' );
+				jQuery("#submit_payulatam_payment_form").click();';
 
-			return '<form action="'.esc_url( $payulatam_adr ).'" method="post" id="payulatam_payment_form" target="_top">
+			if (version_compare( WOOCOMMERCE_VERSION, '2.1', '>=')) {
+				 wc_enqueue_js($code);
+			} else {
+				$woocommerce->add_inline_js($code);
+			}
+
+			return '<form action="'.esc_url( $payulatam_adr ).'" method="POST" id="payulatam_payment_form" target="_top">
 					' . implode( '', $payulatam_args_array) . '
 					<input type="submit" class="button alt" id="submit_payulatam_payment_form" value="' . __( 'Pay via PayU Latam', 'payu-latam-woocommerce' ) . '" /> <a class="button cancel" href="'.esc_url( $order->get_cancel_order_url() ).'">'.__( 'Cancel order &amp; restore cart', 'woocommerce' ).'</a>
 				</form>';
@@ -366,7 +421,7 @@ function woocommerce_payulatam_init(){
 	     */
 		function process_payment( $order_id ) {
 			$order = new WC_Order( $order_id );
-			if ( ! $this->form_submission_method ) {
+			if ( $this->form_method == 'GET' ) {
 				$payulatam_args = $this->get_payulatam_args( $order_id );
 				$payulatam_args = http_build_query( $payulatam_args, '', '&' );
 				if ( $this->testmode == 'yes' ):
@@ -380,25 +435,31 @@ function woocommerce_payulatam_init(){
 					'redirect'	=> $payulatam_adr . $payulatam_args
 				);
 			} else {
-				return array(
-					'result' 	=> 'success',
-					'redirect'	=> add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(woocommerce_get_page_id('pay' ))))
-				);
+				if (version_compare( WOOCOMMERCE_VERSION, '2.1', '>=')) {
+					return array(
+						'result' 	=> 'success',
+						'redirect'	=> add_query_arg('order-pay', $order->id, add_query_arg('key', $order->order_key, get_permalink(woocommerce_get_page_id('pay' ))))
+					);
+				} else {
+					return array(
+						'result' 	=> 'success',
+						'redirect'	=> add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(woocommerce_get_page_id('pay' ))))
+					);
+				}
 
 			}
 
 		}
 		/**
-		* Check for valid payu server callback
-		*
-		* @access public
-		* @return void
+		 * Check for valid payu server callback
+		 *
+		 * @access public
+		 * @return void
 		**/
 		function check_payulatam_response(){
 			@ob_clean();
 	    	if ( ! empty( $_REQUEST ) ) {
 	    		header( 'HTTP/1.1 200 OK' );
-	    		print_r($_REQUEST);
 	        	do_action( "payulatam_init", $_REQUEST );
 			} else {
 				wp_die( __("PayU Latam Request Failure", 'payu-latam-woocommerce') );
@@ -489,16 +550,14 @@ function woocommerce_payulatam_init(){
 
 			                if ( $posted['lapTransactionState'] == 'APPROVED' ) {
 			                	$order->add_order_note( __( 'PayU Latam payment approved', 'payu-latam-woocommerce') );
-								$this->msg['message'] =  __( 'PayU Latam Payment Approved', 'payu-latam-woocommerce') ;
+								$this->msg['message'] =  $this->msg_approved;
 								$this->msg['class'] = 'woocommerce-message';
 			                	$order->payment_complete();
-			                	if ($this->empty_cart == "yes"){
-									$cart = new WC_Cart();
-									$cart->empty_cart(true);
-			                	}
+								$woocommerce->cart->empty_cart();
+
 			                } else {
 			                	$order->update_status( 'on-hold', sprintf( __( 'Payment pending: %s', 'payu-latam-woocommerce'), $posted['lapResponseCode'] ) );
-								$this->msg['message'] = sprintf( __( 'Payment pending: %s', 'payu-latam-woocommerce'), $posted['lapResponseCode'] ) ;
+								$this->msg['message'] = $this->msg_pending;
 								$this->msg['class'] = 'woocommerce-info';
 			                }
 
@@ -520,6 +579,7 @@ function woocommerce_payulatam_init(){
 			            case 'INVALID_TRANSACTION' :
 			            case 'EXPIRED_CARD' :
 			            case 'RESTRICTED_CARD' :
+			            case 'ABANDONED_TRANSACTION':
 			            case 'INTERNAL_PAYMENT_PROVIDER_ERROR' :
 			            case 'INACTIVE_PAYMENT_PROVIDER' :
 			            case 'DIGITAL_CERTIFICATE_NOT_FOUND' :
@@ -528,12 +588,12 @@ function woocommerce_payulatam_init(){
 			            case 'CREDIT_CARD_NOT_AUTHORIZED_FOR_INTERNET_TRANSACTIONS' :
 			                // Order failed
 			                $order->update_status( 'failed', sprintf( __( 'Payment rejected via PayU Latam. Error type: %s', 'payu-latam-woocommerce'), ( $posted['lapTransactionState'] ) ) );
-								$this->msg['message'] = sprintf( __( 'Payment rejected via PayU Latam. Error type: %s.', 'payu-latam-woocommerce'), ( $posted['lapTransactionState'] ) )  ;
+								$this->msg['message'] = $this->msg_declined ;
 								$this->msg['class'] = 'woocommerce-error';
 			            break;
 			            default :
 			                $order->update_status( 'failed', sprintf( __( 'Payment rejected via PayU Latam. Error type: %s', 'payu-latam-woocommerce'), ( $posted['lapTransactionState'] ) ) );
-								$this->msg['message'] = sprintf( __( 'Payment rejected via PayU Latam. Error type: %s', 'payu-latam-woocommerce'), ( $posted['lapTransactionState'] ) )  ;
+								$this->msg['message'] = $this->msg_cancel ;
 								$this->msg['class'] = 'woocommerce-error';
 			            break;
 			        }
@@ -600,12 +660,12 @@ function woocommerce_payulatam_init(){
 
 			                if ( $codes[$state] == 'APPROVED' ) {
 			                	$order->add_order_note( __( 'PayU Latam payment approved', 'payu-latam-woocommerce') );
-								$this->msg['message'] =  __( 'PayU Latam Payment Approved', 'payu-latam-woocommerce') ;
+								$this->msg['message'] = $this->msg_approved;
 								$this->msg['class'] = 'woocommerce-message';
 			                	$order->payment_complete();
 			                } else {
 			                	$order->update_status( 'on-hold', sprintf( __( 'Payment pending: %s', 'payu-latam-woocommerce'), $codes[$state] ) );
-								$this->msg['message'] = sprintf( __( 'Payment pending: %s', 'payu-latam-woocommerce'), $codes[$state] ) ;
+								$this->msg['message'] = $this->msg_pending;
 								$this->msg['class'] = 'woocommerce-info';
 			                }
 
@@ -615,15 +675,16 @@ function woocommerce_payulatam_init(){
 			            break;
 			            case 'DECLINED' :
 			            case 'EXPIRED' :
+			            case 'ABANDONED_TRANSACTION':
 			            case 'ERROR' :
 			                // Order failed
 			                $order->update_status( 'failed', sprintf( __( 'Payment rejected via PayU Latam. Error type: %s', 'payu-latam-woocommerce'), ( $codes[$state] ) ) );
-								$this->msg['message'] = sprintf( __( 'Payment rejected via PayU Latam. Error type: %s.', 'payu-latam-woocommerce'), ( $codes[$state] ) )  ;
+								$this->msg['message'] = $this->msg_declined ;
 								$this->msg['class'] = 'woocommerce-error';
 			            break;
 			            default :
 			                $order->update_status( 'failed', sprintf( __( 'Payment rejected via PayU Latam.', 'payu-latam-woocommerce'), ( $codes[$state] ) ) );
-								$this->msg['message'] = sprintf( __( 'Payment rejected via PayU Latam.', 'payu-latam-woocommerce'), ( $codes[$state] ) )  ;
+								$this->msg['message'] = $this->msg_cancel ;
 								$this->msg['class'] = 'woocommerce-error';
 			            break;
 			        }
@@ -638,7 +699,6 @@ function woocommerce_payulatam_init(){
 		    }
 		    //confirmation process
 		    if ( ! empty( $posted['state_pol'] ) && ! empty( $posted['order_id'] ) ) {
-
 			    $order = $this->get_payulatam_order( $posted );
 
 			     if ( 'yes' == $this->debug )
@@ -698,11 +758,17 @@ function woocommerce_payulatam_init(){
 
 							 // Store PP Details
 			                if ( ! empty( $posted['email_buyer'] ) )
-			                	update_post_meta( $order->id, __('Payer PayU Latam email', 'payu-latam-woocommerce'), $posted['email_buyer'] );
+			                	update_post_meta( $order->id, __('PayU Latam Client email', 'payu-latam-woocommerce'), $posted['email_buyer'] );
 			                if ( ! empty( $posted['transaction_id'] ) )
 			                	update_post_meta( $order->id, __('Transaction ID', 'payu-latam-woocommerce'), $posted['transaction_id'] );
+			                if ( ! empty( $posted['reference_pol'] ) )
+			                	update_post_meta( $order->id, __('Trasability Code', 'payu-latam-woocommerce'), $posted['reference_pol'] );
 			                if ( ! empty( $posted['sign'] ) )
-			                	update_post_meta( $order->id, __('Trasability Code', 'payu-latam-woocommerce'), $posted['sign'] );
+			                	update_post_meta( $order->id, __('Tash Code', 'payu-latam-woocommerce'), $posted['sign'] );
+			                if ( ! empty( $posted['ip'] ) )
+			                	update_post_meta( $order->id, __('Transaction IP', 'payu-latam-woocommerce'), $posted['ip'] );
+
+			               	update_post_meta( $order->id, __('Extra Data', 'payu-latam-woocommerce'), 'response_code_pol: '.$posted['response_code_pol'].' - '.'state_pol: '.$posted['state_pol'].' - '.'payment_method: '.$posted['payment_method'].' - '.'transaction_date: '.$posted['transaction_date'].' - '.'currency: '.$posted['currency'] );
 			                /*if ( ! empty( $posted['last_name'] ) )
 			                	update_post_meta( $order->id, 'Payer last name', $posted['last_name'] );*/
 			                if ( ! empty( $posted['payment_method_type'] ) )
@@ -710,12 +776,12 @@ function woocommerce_payulatam_init(){
 
 			                if ( $codes[$state] == 'APPROVED' ) {
 			                	$order->add_order_note( __( 'PayU Latam payment approved', 'payu-latam-woocommerce') );
-								$this->msg['message'] =  __( 'PayU Latam Payment Approved', 'payu-latam-woocommerce') ;
+								$this->msg['message'] =  $this->msg_approved;
 								$this->msg['class'] = 'woocommerce-message';
 			                	$order->payment_complete();
 			                } else {
 			                	$order->update_status( 'on-hold', sprintf( __( 'Payment pending: %s', 'payu-latam-woocommerce'), $codes[$state] ) );
-								$this->msg['message'] = sprintf( __( 'Payment pending: %s', 'payu-latam-woocommerce'), $codes[$state] ) ;
+								$this->msg['message'] = $this->msg_pending;
 								$this->msg['class'] = 'woocommerce-info';
 			                }
 
@@ -726,14 +792,15 @@ function woocommerce_payulatam_init(){
 			            case 'DECLINED' :
 			            case 'EXPIRED' :
 			            case 'ERROR' :
+			            case 'ABANDONED_TRANSACTION':
 			                // Order failed
 			                $order->update_status( 'failed', sprintf( __( 'Payment rejected via PayU Latam. Error type: %s', 'payu-latam-woocommerce'), ( $codes[$state] ) ) );
-								$this->msg['message'] = sprintf( __( 'Payment rejected via PayU Latam. Error type: %s.', 'payu-latam-woocommerce'), ( $codes[$state] ) )  ;
+								$this->msg['message'] = $this->msg_declined ;
 								$this->msg['class'] = 'woocommerce-error';
 			            break;
 			            default :
 			                $order->update_status( 'failed', sprintf( __( 'Payment rejected via PayU Latam.', 'payu-latam-woocommerce'), ( $codes[$state] ) ) );
-								$this->msg['message'] = sprintf( __( 'Payment rejected via PayU Latam.', 'payu-latam-woocommerce'), ( $codes[$state] ) )  ;
+								$this->msg['message'] = $this->msg_cancel ;
 								$this->msg['class'] = 'woocommerce-error';
 			            break;
 			        }
@@ -743,7 +810,7 @@ function woocommerce_payulatam_init(){
                 //For wooCoomerce 2.0
                 $redirect_url = add_query_arg( array('msg'=> urlencode($this->msg['message']), 'type'=>$this->msg['class']), $redirect_url );
 
-                wp_redirect( $redirect_url );
+                //wp_redirect( $redirect_url );
                 exit;
 		    }
 		}
@@ -761,7 +828,7 @@ function woocommerce_payulatam_init(){
 	    	// Backwards comp for IPN requests
 	    	
 		    	$order_id = (int) $custom;
-		    	$order_key = $posted['referenceCode'];
+		    	$order_key = ($posted['referenceCode'])?$posted['referenceCode']:$posted['reference_sale'];
 	    	
 			$order = new WC_Order( $order_id );
 
@@ -774,7 +841,7 @@ function woocommerce_payulatam_init(){
 			// Validate key
 			if ( $order->order_key !== $order_key ) {
 	        	if ( $this->debug=='yes' )
-	        		$this->log->add( 'paypal', __('Error: Order Key does not match invoice.', 'payu-latam-woocommerce') );
+	        		$this->log->add( 'payulatam', __('Error: Order Key does not match invoice.', 'payu-latam-woocommerce') );
 	        	exit;
 	        }
 

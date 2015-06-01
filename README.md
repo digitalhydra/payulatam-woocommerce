@@ -1,6 +1,5 @@
 PayU-Latam-Gateway-for-Woocommerce
 ==================================
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/codeisintheair/payulatam-woocommerce?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 PayU Latinoamérica Payment Gateway for WooCommerce. Recibe pagos en internet en Latinoamérica desde cualquier parte del mundo.
 
@@ -14,7 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 WooCommerce is a powerful, extendable eCommerce plugin that helps you sell anything. Beautifully.
 
-PayU Latam - la plataforma de procesamiento de pagos en línea de América Latina.
+PayU Latam - la plataforma de procesamiento de pagos en línea de América Latina, Crea tu Cuenta [aqui](https://secure.payulatam.com/online_account/509773/create_account.html "PayU Latam").
 
 Both are now one of the best choices to start an eCommerece site in latinoamerica, fast and easy.
 *   "WooCommerce" is an open source application
