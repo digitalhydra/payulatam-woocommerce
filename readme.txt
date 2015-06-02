@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: digitalhydra
-Donate link: http://www.thecodeisintheair.com/wordpress-plugins/
+Contributors: deusnoname
+Donate link: http://thecodeisintheair.com/payu-latam/woocommerce-payu-latam-gateway-plugin/
 Tags: WooCommerce, Payment Gateway, PayU Latam, PayU Latinoamerica, Pagos en linea Colombia, Pagos en linea Latinoamerica
 Requires at least: 3.7
-Tested up to: 3.8.1
-Stable tag: 1.1.2
+Tested up to: 4.0
+Stable tag: 1.1.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,25 +14,29 @@ PayU Latam Payment Gateway for WooCommerce. Recibe pagos en internet en latinoam
 
 WooCommerce is a powerful, extendable eCommerce plugin that helps you sell anything. Beautifully.
 
-PayU Latam - la plataforma de procesamiento de pagos en linea de América Latina.
+PayU Latam - la plataforma de procesamiento de pagos en linea de América Latina, Crea tu Cuenta [aqui](https://secure.payulatam.com/online_account/509773/create_account.html "PayU Latam").
 
 Both are now one of the best choices to start an eCommerece site in latinoamerica, fast and easy.
 *   "WooCommerce" is an open source application
 *   "PayU Latam" is offering payment collection with no setup cost.
 
-Update:
-Since PayU is updating their testing platform all testing transaccions would be rejected unless the user use the followings parameters in PayU payment form:
+Note:
+To test the payment platform you must use this parameters in the payment form:
 Credit card: VISA 
-Credit card Number: 4111111111111111 
+Credit card Number: 4111111111111111
 Client Name: "APPROVED"
 
 Visit [www.thecodeisintheair.com](http://thecodeisintheair.com/wordpress-plugins/woocommerce-payu-latam-gateway-plugin/ " Code is in the Air : Woocommerce PayU Latam Gateway Plugin") for more info about this plugin.
+
+Visit [PayU Latam](https://secure.payulatam.com/online_account/509773/create_account.html "PayU Latam") to create your account.
 
 == Installation ==
 
 1. Ensure you have latest version of WooCommerce plugin installed (WooCommerce 2.0+)
 2. Unzip and upload contents of the plugin to your `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
+
+Please see the screenshots on information about how to get your account info from Payu Latam.
 
 == Configuration ==
 
@@ -90,6 +94,25 @@ Client Name: "APPROVED"
 = 1.1.2 =
 * Add payment confirmation support for new accounts.
 
+= 1.1.3 =
+* Add option to select which method to use on the form to send data to PayU Latam.
+* Fix a few Compatibility Issues for Woocommerce 2.1.*
+
+= 1.1.4 =
+* Fix bug for transaction page.
+
+= 1.1.5 =
+* Add page end point option and remove empty cart option, add ABANDONED_TRANSACTION state.
+
+= 1.1.5.1=
+* Important Patch, return url won't work.
+
+= 1.1.5.2=
+* Important Patch, fixes notification error from payu latam.
+
+= 1.1.6=
+* Add fields to customize transaction messages.
+
 == Upgrade Notice ==
 
 = 1.0.1 =
@@ -109,3 +132,23 @@ We added some fallbacks for response codes sended by payu gateway.
 
 = 1.1.2 =
 * Add payment confirmation support for new accounts.
+
+= 1.1.3 =
+* Add option to select which method to use on the form to send data to PayU Latam.
+* Go to Payu Latam Setting and choose the method and save before using the payment gateway again.
+* Fix a few Compatibility Issues for Woocommerce 2.1.*
+
+= 1.1.4 =
+* Payment confirmation will work with no problem.
+
+= 1.1.5 =
+* Add page end point option and remove empty cart option, add ABANDONED_TRANSACTION state.
+
+= 1.1.5.1=
+* Important Patch, return url won't work.
+
+= 1.1.5.2=
+* Important Patch, fixes notification error from payu latam.
+
+= 1.1.6=
+* Add fields to customize transaction messages.
