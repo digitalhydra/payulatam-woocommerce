@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce - PayU Latam Gateway
 Plugin URI: http://thecodeisintheair.com/wordpress-plugins/woocommerce-payu-latam-gateway-plugin/
 Description: PayU Latinoamerica Payment Gateway for WooCommerce. Recibe pagos en internet en latinoamérica desde cualquier parte del mundo. ¡La forma más rápida, sencilla y segura para vender y recibir pagos por internet!
-Version: 1.1.6
+Version: 1.1.7
 Author: Code is in the Air - Jairo Ivan Rondon Mejia
 Author URI: http://www.thecodeisintheair.com/
 License: GNU General Public License v3.0
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
 
 add_action('plugins_loaded', 'woocommerce_payulatam_init', 0);
-define('IMGDIR', WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) . '/assets/img/');
+define('PAYU_ASSETS', WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) . '/assets');
 
 function woocommerce_payulatam_init(){
 	if(!class_exists('WC_Payment_Gateway')) return;
@@ -38,7 +38,7 @@ function woocommerce_payulatam_init(){
 	        //add_action('init', array($this, 'load_plugin_textdomain'));
 
 			$this->id 					= 'payulatam';
-			$this->icon         		= IMGDIR . 'logo.png';
+			$this->icon_default   		= $this->get_country_icon(false);
 			$this->method_title 		= __('PayU Latam','payu-latam-woocommerce');
 			$this->method_description	= __("The easiest way to sell and recive payments online in latinamerica",'payu-latam-woocommerce');
 			$this->has_fields 			= false;
@@ -52,7 +52,18 @@ function woocommerce_payulatam_init(){
 			$this->testaccount_id	= '500537';
 			$this->testapikey		= '6u39nqhq8ftd0hlvnjfs66eh8c';
 			$this->debug = "no";
-			
+
+			$this->show_methods		= $this->settings['show_methods'];
+			$this->icon_checkout 	= $this->settings['icon_checkout'];
+
+			if($this->show_methods=='yes'&&trim($this->settings['icon_checkout'])=='') {
+				$this->icon =  $this->icon_default;
+			}elseif(trim($this->settings['icon_checkout'])!=''){
+				$this->icon = $this->settings['icon_checkout'];
+			}else{
+				$this->icon = $this->get_country_icon();
+			}
+
 			$this->title 			= $this->settings['title'];
 			$this->description 		= $this->settings['description'];
 			$this->merchant_id 		= ($this->testmode=='yes')?$this->testmerchant_id:$this->settings['merchant_id'];
@@ -113,6 +124,17 @@ function woocommerce_payulatam_init(){
 			load_plugin_textdomain( 'payu-latam-woocommerce', false, dirname( plugin_basename( __FILE__ ) ) . "/languages" );
 	    }
 
+		/**
+		 * Show payment metods by country
+		 */
+		
+		public function get_country_icon($default=true){
+			if(!$default)
+				$country = WC()->countries->get_base_country();
+
+			$icon = PAYU_ASSETS.'/img/payulogo'.$country.'.png';
+			return $icon;
+		}
     	/**
 		 * Check if Gateway can be display 
 	     *
@@ -150,6 +172,20 @@ function woocommerce_payulatam_init(){
 					'label' 		=> __('Enable PayU Latam Payment Module.', 'payu-latam-woocommerce'),
 					'default' 		=> 'no',
 					'description' 	=> __('Show in the Payment List as a payment option', 'payu-latam-woocommerce')
+				),
+				'show_methods' => array(
+					'title' 		=> __('Mostrar Metodos', 'payu-latam-woocommerce'),
+					'type' 			=> 'checkbox',
+					'label' 		=> __('Mostrar metodos de pago por Pais.', 'payu-latam-woocommerce'),
+					'default' 		=> 'no',
+					'description' 	=> __('Mostrar imagen de los metodos de pago soportados por Pais.', 'payu-latam-woocommerce')
+				),
+      			'icon_checkout' => array(
+					'title' 		=> __('Logo en el checkout:', 'payu-latam-woocommerce'),
+					'type'			=> 'text',
+					'default'		=> $this->get_country_icon(),
+					'description' 	=> __('URL de la Imagen para mostrar en el carrro de compra.', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
 				),
       			'title' => array(
 					'title' 		=> __('Title:', 'payu-latam-woocommerce'),
@@ -274,7 +310,7 @@ function woocommerce_payulatam_init(){
 	     * @return string
          **/
 		public function admin_options(){
-			echo '<h3>'.__('PayU Latam', 'payu-latam-woocommerce').'</h3>';
+			echo '<img src="'.$this->get_country_icon().'" alt="PayU" width="80"><h3>'.__('PayU Latam', 'payu-latam-woocommerce').'</h3>';
 			echo '<p>'.__('The easiest way to sell and recive payments online in latinamerica', 'payu-latam-woocommerce').'</p>';
 			echo '<table class="form-table">';
 			// Generate the HTML For the settings form.
@@ -902,6 +938,8 @@ function woocommerce_payulatam_init(){
         	return $page_list;
     		}
 		}
+
+
 		/**
 		 * Add all currencys supported by PayU Latem so it can be display 
 		 * in the woocommerce settings
