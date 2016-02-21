@@ -3,8 +3,8 @@ Contributors: deusnoname
 Donate link: http://thecodeisintheair.com/payu-latam/woocommerce-payu-latam-gateway-plugin/
 Tags: WooCommerce, Payment Gateway, PayU Latam, PayU Latinoamerica, Pagos en linea Colombia, Pagos en linea Latinoamerica
 Requires at least: 3.7
-Tested up to: 4.0
-Stable tag: 1.1.6
+Tested up to: 4.3
+Stable tag: 1.1.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -104,14 +104,17 @@ Client Name: "APPROVED"
 = 1.1.5 =
 * Add page end point option and remove empty cart option, add ABANDONED_TRANSACTION state.
 
-= 1.1.5.1=
+= 1.1.5.1 =
 * Important Patch, return url won't work.
 
-= 1.1.5.2=
+= 1.1.5.2 =
 * Important Patch, fixes notification error from payu latam.
 
-= 1.1.6=
+= 1.1.6 =
 * Add fields to customize transaction messages.
+
+= 1.1.7 =
+* Add new payu logos based on country of the store also the option to use a custome image.
 
 == Upgrade Notice ==
 
@@ -144,11 +147,14 @@ We added some fallbacks for response codes sended by payu gateway.
 = 1.1.5 =
 * Add page end point option and remove empty cart option, add ABANDONED_TRANSACTION state.
 
-= 1.1.5.1=
+= 1.1.5.1 =
 * Important Patch, return url won't work.
 
-= 1.1.5.2=
+= 1.1.5.2 =
 * Important Patch, fixes notification error from payu latam.
 
-= 1.1.6=
+= 1.1.6 =
 * Add fields to customize transaction messages.
+
+= 1.1.7 =
+* Add new payu logos based on country of the store also the option to use a custome image.

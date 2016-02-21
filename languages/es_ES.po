@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PayU Latam Woocommerce R1\n"
-"POT-Creation-Date: 2014-09-11 09:31-0500\n"
-"PO-Revision-Date: 2014-09-11 09:32-0500\n"
+"POT-Creation-Date: 2014-06-07 09:24-0500\n"
+"PO-Revision-Date: 2014-06-07 09:25-0500\n"
 "Last-Translator: Jairo Ivan Rondon Mejia <jairo@thecodeisintheair.com>\n"
 "Language-Team: Code is in the Air <jairo@thecodeisintheair.com>\n"
 "Language: es_ES\n"
@@ -16,44 +16,44 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../woocommerce-gateway-payulatam.php:42
-#: ../woocommerce-gateway-payulatam.php:277
+#: ../woocommerce-gateway-payulatam.php:243
 msgid "PayU Latam"
 msgstr "PayU Latinoamérica"
 
 #: ../woocommerce-gateway-payulatam.php:43
-#: ../woocommerce-gateway-payulatam.php:278
+#: ../woocommerce-gateway-payulatam.php:244
 msgid "The easiest way to sell and recive payments online in latinamerica"
 msgstr "La forma fácil de vender y recibir pagos por internet en Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:148
+#: ../woocommerce-gateway-payulatam.php:142
 msgid "Enable/Disable"
 msgstr "Activo/Inactivo"
 
-#: ../woocommerce-gateway-payulatam.php:150
+#: ../woocommerce-gateway-payulatam.php:144
 msgid "Enable PayU Latam Payment Module."
 msgstr "Activar Método de Pago PayU Latinoamérica."
 
-#: ../woocommerce-gateway-payulatam.php:152
+#: ../woocommerce-gateway-payulatam.php:146
 msgid "Show in the Payment List as a payment option"
 msgstr "Mostrar PayU Latinoamérica en la lista de métodos de pago."
 
-#: ../woocommerce-gateway-payulatam.php:155
+#: ../woocommerce-gateway-payulatam.php:149
 msgid "Title:"
 msgstr "Titulo"
 
-#: ../woocommerce-gateway-payulatam.php:157
+#: ../woocommerce-gateway-payulatam.php:151
 msgid "PayU Latam Online Payments"
 msgstr "Pagos en linea PayU Latinoamérica "
 
-#: ../woocommerce-gateway-payulatam.php:158
+#: ../woocommerce-gateway-payulatam.php:152
 msgid "This controls the title which the user sees during checkout."
 msgstr "Esto controla el nombre del método de pago que el usuario ve al pagar."
 
-#: ../woocommerce-gateway-payulatam.php:162
+#: ../woocommerce-gateway-payulatam.php:156
 msgid "Description:"
 msgstr "Descripción"
 
-#: ../woocommerce-gateway-payulatam.php:164
+#: ../woocommerce-gateway-payulatam.php:158
 msgid ""
 "Pay securely by Credit or Debit Card or Internet Banking through PayU Latam "
 "Secure Servers."
@@ -61,24 +61,24 @@ msgstr ""
 "Pague con tarjeta de crédito, debito o transacción bancaria de forma segura "
 "a través de los servidores seguros de PayU Latinoamérica."
 
-#: ../woocommerce-gateway-payulatam.php:165
+#: ../woocommerce-gateway-payulatam.php:159
 msgid "This controls the description which the user sees during checkout."
 msgstr "Esto controla la descripción que el usuario ve al pagar."
 
-#: ../woocommerce-gateway-payulatam.php:169
+#: ../woocommerce-gateway-payulatam.php:163
 msgid "Merchant ID"
 msgstr "ID del Vendedor"
 
-#: ../woocommerce-gateway-payulatam.php:171
-#: ../woocommerce-gateway-payulatam.php:183
+#: ../woocommerce-gateway-payulatam.php:165
+#: ../woocommerce-gateway-payulatam.php:177
 msgid "Given to Merchant by PayU Latam"
 msgstr "Identificación del vendedor promocionada por PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:175
+#: ../woocommerce-gateway-payulatam.php:169
 msgid "Account ID"
 msgstr "ID de la Cuenta"
 
-#: ../woocommerce-gateway-payulatam.php:177
+#: ../woocommerce-gateway-payulatam.php:171
 msgid ""
 "Some Countrys (Brasil, Mexico) require this ID, Gived to you by PayU Latam "
 "on regitration."
@@ -86,118 +86,78 @@ msgstr ""
 "Algunos Países (Brasil, Mexico) requieren esta información proporcionada por "
 "PayU Latinoamérica."
 
-#: ../woocommerce-gateway-payulatam.php:181
+#: ../woocommerce-gateway-payulatam.php:175
 msgid "ApiKey"
 msgstr "Llave de API"
 
-#: ../woocommerce-gateway-payulatam.php:187
+#: ../woocommerce-gateway-payulatam.php:181
 msgid "TEST Mode"
 msgstr "Modo de Pruebas"
 
-#: ../woocommerce-gateway-payulatam.php:189
+#: ../woocommerce-gateway-payulatam.php:183
 msgid "Enable PayU Latam TEST Transactions."
 msgstr "Habilita las transacciones de prueba en PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:191
+#: ../woocommerce-gateway-payulatam.php:185
 msgid "Tick to run TEST Transaction on the PayU Latam platform"
 msgstr ""
 "Activar para hacer transacciones de prueba con la plataforma de PayU "
 "Latinoamérica."
 
-#: ../woocommerce-gateway-payulatam.php:195
+#: ../woocommerce-gateway-payulatam.php:189
 msgid "Tax Rate - Read"
 msgstr "Tasa de Impuestos - Leer "
 
-#: ../woocommerce-gateway-payulatam.php:198
+#: ../woocommerce-gateway-payulatam.php:192
 msgid "Tax rates for Transactions (IVA)."
 msgstr "Tasa de Impuestos sobre las transacciones (IVA)."
 
-#: ../woocommerce-gateway-payulatam.php:202
+#: ../woocommerce-gateway-payulatam.php:196
 msgid "Tax Return Base"
 msgstr "Tasa de Retorno sobre las transacciones"
 
-#: ../woocommerce-gateway-payulatam.php:206
+#: ../woocommerce-gateway-payulatam.php:200
 msgid "Tax base to calculate IVA "
 msgstr "Tasa para calcular impuestos."
 
-#: ../woocommerce-gateway-payulatam.php:210
+#: ../woocommerce-gateway-payulatam.php:204
 msgid "Gateway Language"
 msgstr "Idioma de la plataforma"
 
-#: ../woocommerce-gateway-payulatam.php:213
+#: ../woocommerce-gateway-payulatam.php:207
 msgid "PayU Latam Gateway Language "
 msgstr "Idioma que desea para la plataforma de PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:217
+#: ../woocommerce-gateway-payulatam.php:211
 msgid "Form Method"
 msgstr "Metodo del Formulario"
 
-#: ../woocommerce-gateway-payulatam.php:221
+#: ../woocommerce-gateway-payulatam.php:215
 msgid "Checkout form submition method "
 msgstr "Metodo de envio del formulario"
 
-#: ../woocommerce-gateway-payulatam.php:225
+#: ../woocommerce-gateway-payulatam.php:219
 msgid "Return Page"
 msgstr "Pagina de regreso"
 
-#: ../woocommerce-gateway-payulatam.php:227
+#: ../woocommerce-gateway-payulatam.php:221
 msgid "Select Page"
 msgstr "Seleccionar Pagina"
 
-#: ../woocommerce-gateway-payulatam.php:228
+#: ../woocommerce-gateway-payulatam.php:222
 msgid "URL of success page"
 msgstr "Dirección de la pagina de retorno"
 
-#: ../woocommerce-gateway-payulatam.php:232
+#: ../woocommerce-gateway-payulatam.php:226
 msgid "Page End Point (Woo > 2.1)"
 msgstr "Endpoint para pagina de regreso"
 
-#: ../woocommerce-gateway-payulatam.php:235
+#: ../woocommerce-gateway-payulatam.php:229
+#, fuzzy
 msgid "Return Page End Point."
-msgstr "Punto de regreso de woocommerce"
+msgstr "Pagina de regreso"
 
-#: ../woocommerce-gateway-payulatam.php:239
-#: ../woocommerce-gateway-payulatam.php:242
-msgid "Message for approved transaction"
-msgstr "Mensaje para transacciones aprovadas"
-
-#: ../woocommerce-gateway-payulatam.php:241
-msgid "PayU Latam Payment Approved"
-msgstr "Pago Aprobado por PayU Latinoamérica"
-
-#: ../woocommerce-gateway-payulatam.php:246
-#: ../woocommerce-gateway-payulatam.php:249
-msgid "Message for pending transaction"
-msgstr "Mensaje para transacciones pendientes"
-
-#: ../woocommerce-gateway-payulatam.php:248
-msgid "Payment pending"
-msgstr "Pago Pendiente"
-
-#: ../woocommerce-gateway-payulatam.php:253
-#: ../woocommerce-gateway-payulatam.php:256
-msgid "Message for cancel transaction"
-msgstr "Mensaje para transacciones canceladas"
-
-#: ../woocommerce-gateway-payulatam.php:255
-msgid "Transaction Canceled."
-msgstr "Transacción cancelada"
-
-#: ../woocommerce-gateway-payulatam.php:260
-msgid "Message for declined transaction"
-msgstr "Mensaje para transacciones declinadas"
-
-#: ../woocommerce-gateway-payulatam.php:262
-#: ../woocommerce-gateway-payulatam.php:686
-#: ../woocommerce-gateway-payulatam.php:802
-msgid "Payment rejected via PayU Latam."
-msgstr "Pago Rechazado por PayU Latinoamérica."
-
-#: ../woocommerce-gateway-payulatam.php:263
-msgid "Message for declined transaction "
-msgstr "Mensaje para transacciones declinadas"
-
-#: ../woocommerce-gateway-payulatam.php:301
+#: ../woocommerce-gateway-payulatam.php:267
 msgid ""
 "Thank you for your order, please click the button below to pay with PayU "
 "Latam."
@@ -205,7 +165,7 @@ msgstr ""
 "Gracias por su orden, por favor seleccione el botón abajo para pagar con "
 "PayU Latinoamérica."
 
-#: ../woocommerce-gateway-payulatam.php:382
+#: ../woocommerce-gateway-payulatam.php:348
 msgid ""
 "Thank you for your order. We are now redirecting you to PayU Latam to make "
 "payment."
@@ -213,143 +173,167 @@ msgstr ""
 "Gracias por su Orden, Lo estamos redireccionando a la plataforma de PayU "
 "Latinoamérica para realizar el pago."
 
-#: ../woocommerce-gateway-payulatam.php:410
+#: ../woocommerce-gateway-payulatam.php:376
 msgid "Pay via PayU Latam"
 msgstr "Pagar con PayU Latinoamérica."
 
-#: ../woocommerce-gateway-payulatam.php:410
+#: ../woocommerce-gateway-payulatam.php:376
 msgid "Cancel order &amp; restore cart"
 msgstr "Cancelar Orden y restaurar el carro de compra"
 
-#: ../woocommerce-gateway-payulatam.php:465
+#: ../woocommerce-gateway-payulatam.php:432
 msgid "PayU Latam Request Failure"
 msgstr "Fallo la petición a PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:515
+#: ../woocommerce-gateway-payulatam.php:482
 msgid "Payment error: Amounts do not match (Amount "
 msgstr "Error al pagar: Cantidades no coinciden (Cantidad "
 
-#: ../woocommerce-gateway-payulatam.php:518
-#: ../woocommerce-gateway-payulatam.php:520
-#: ../woocommerce-gateway-payulatam.php:628
-#: ../woocommerce-gateway-payulatam.php:630
-#: ../woocommerce-gateway-payulatam.php:738
-#: ../woocommerce-gateway-payulatam.php:740
+#: ../woocommerce-gateway-payulatam.php:485
+#: ../woocommerce-gateway-payulatam.php:487
+#: ../woocommerce-gateway-payulatam.php:595
+#: ../woocommerce-gateway-payulatam.php:597
+#: ../woocommerce-gateway-payulatam.php:705
+#: ../woocommerce-gateway-payulatam.php:707
 #, php-format
 msgid "Validation error: PayU Latam amounts do not match (gross %s)."
 msgstr ""
 "Error de Validación: La cantidad pagada en PayU Latinoamérica  no coincide "
 "(Cantidad %s)."
 
-#: ../woocommerce-gateway-payulatam.php:532
-#: ../woocommerce-gateway-payulatam.php:533
-#: ../woocommerce-gateway-payulatam.php:642
-#: ../woocommerce-gateway-payulatam.php:643
-#: ../woocommerce-gateway-payulatam.php:752
-#: ../woocommerce-gateway-payulatam.php:753
+#: ../woocommerce-gateway-payulatam.php:499
+#: ../woocommerce-gateway-payulatam.php:500
+#: ../woocommerce-gateway-payulatam.php:609
+#: ../woocommerce-gateway-payulatam.php:610
+#: ../woocommerce-gateway-payulatam.php:719
+#: ../woocommerce-gateway-payulatam.php:720
 #, php-format
 msgid "Validation error: Payment in PayU Latam comes from another id (%s)."
 msgstr "Error de Validación: El pago en PayU fue hecho a otro Vendedor (%s)."
 
-#: ../woocommerce-gateway-payulatam.php:541
-#: ../woocommerce-gateway-payulatam.php:651
+#: ../woocommerce-gateway-payulatam.php:508
+#: ../woocommerce-gateway-payulatam.php:618
 msgid "Payer PayU Latam email"
 msgstr "Correo Electrónico del comprador en PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:543
-#: ../woocommerce-gateway-payulatam.php:653
-#: ../woocommerce-gateway-payulatam.php:763
+#: ../woocommerce-gateway-payulatam.php:510
+#: ../woocommerce-gateway-payulatam.php:620
+#: ../woocommerce-gateway-payulatam.php:730
 msgid "Transaction ID"
 msgstr "ID de la transacción"
 
-#: ../woocommerce-gateway-payulatam.php:545
-#: ../woocommerce-gateway-payulatam.php:655
-#: ../woocommerce-gateway-payulatam.php:765
+#: ../woocommerce-gateway-payulatam.php:512
+#: ../woocommerce-gateway-payulatam.php:622
+#: ../woocommerce-gateway-payulatam.php:732
 msgid "Trasability Code"
 msgstr "Código de Trazabilidad"
 
-#: ../woocommerce-gateway-payulatam.php:549
-#: ../woocommerce-gateway-payulatam.php:659
-#: ../woocommerce-gateway-payulatam.php:775
+#: ../woocommerce-gateway-payulatam.php:516
+#: ../woocommerce-gateway-payulatam.php:626
+#: ../woocommerce-gateway-payulatam.php:742
 msgid "Payment type"
 msgstr "Metodo de Pago Usado"
 
-#: ../woocommerce-gateway-payulatam.php:552
-#: ../woocommerce-gateway-payulatam.php:662
-#: ../woocommerce-gateway-payulatam.php:778
+#: ../woocommerce-gateway-payulatam.php:519
+#: ../woocommerce-gateway-payulatam.php:629
+#: ../woocommerce-gateway-payulatam.php:745
 msgid "PayU Latam payment approved"
 msgstr "Pago Aprobado por PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:559
-#: ../woocommerce-gateway-payulatam.php:667
-#: ../woocommerce-gateway-payulatam.php:783
+#: ../woocommerce-gateway-payulatam.php:520
+#: ../woocommerce-gateway-payulatam.php:630
+#: ../woocommerce-gateway-payulatam.php:746
+msgid "PayU Latam Payment Approved"
+msgstr "Pago Aprobado por PayU Latinoamérica"
+
+#: ../woocommerce-gateway-payulatam.php:526
+#: ../woocommerce-gateway-payulatam.php:527
+#: ../woocommerce-gateway-payulatam.php:634
+#: ../woocommerce-gateway-payulatam.php:635
+#: ../woocommerce-gateway-payulatam.php:750
+#: ../woocommerce-gateway-payulatam.php:751
 #, php-format
 msgid "Payment pending: %s"
 msgstr "Pago Pendiente: %s"
 
-#: ../woocommerce-gateway-payulatam.php:565
-#: ../woocommerce-gateway-payulatam.php:673
-#: ../woocommerce-gateway-payulatam.php:789
+#: ../woocommerce-gateway-payulatam.php:532
+#: ../woocommerce-gateway-payulatam.php:640
+#: ../woocommerce-gateway-payulatam.php:756
 msgid "Payment complete."
 msgstr "Pago Completado en PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:590
-#: ../woocommerce-gateway-payulatam.php:595
-#: ../woocommerce-gateway-payulatam.php:681
-#: ../woocommerce-gateway-payulatam.php:797
+#: ../woocommerce-gateway-payulatam.php:557
+#: ../woocommerce-gateway-payulatam.php:562
+#: ../woocommerce-gateway-payulatam.php:563
+#: ../woocommerce-gateway-payulatam.php:648
+#: ../woocommerce-gateway-payulatam.php:764
 #, php-format
 msgid "Payment rejected via PayU Latam. Error type: %s"
 msgstr "Pago Rechazado por PayU Latinoamérica. Tipo de error: %s"
 
-#: ../woocommerce-gateway-payulatam.php:617
-#: ../woocommerce-gateway-payulatam.php:727
+#: ../woocommerce-gateway-payulatam.php:558
+#: ../woocommerce-gateway-payulatam.php:649
+#: ../woocommerce-gateway-payulatam.php:765
+#, php-format
+msgid "Payment rejected via PayU Latam. Error type: %s."
+msgstr "Pago Rechazado por PayU Latinoamérica. Tipo de error: %s"
+
+#: ../woocommerce-gateway-payulatam.php:584
+#: ../woocommerce-gateway-payulatam.php:694
 msgid "Aborting, Order #"
 msgstr "Cancelando, Orden #"
 
-#: ../woocommerce-gateway-payulatam.php:625
-#: ../woocommerce-gateway-payulatam.php:735
+#: ../woocommerce-gateway-payulatam.php:592
+#: ../woocommerce-gateway-payulatam.php:702
 msgid "Payment error: Amounts do not match (amount "
 msgstr "Error al pagar: Las cantidades no coinciden (cantidad "
 
-#: ../woocommerce-gateway-payulatam.php:761
+#: ../woocommerce-gateway-payulatam.php:653
+#: ../woocommerce-gateway-payulatam.php:654
+#: ../woocommerce-gateway-payulatam.php:769
+#: ../woocommerce-gateway-payulatam.php:770
+msgid "Payment rejected via PayU Latam."
+msgstr "Pago Rechazado por PayU Latinoamérica."
+
+#: ../woocommerce-gateway-payulatam.php:728
 #, fuzzy
 msgid "PayU Latam Client email"
 msgstr "Correo Electrónico del comprador en PayU Latinoamérica"
 
-#: ../woocommerce-gateway-payulatam.php:767
+#: ../woocommerce-gateway-payulatam.php:734
 #, fuzzy
 msgid "Tash Code"
 msgstr "Código de Trazabilidad"
 
-#: ../woocommerce-gateway-payulatam.php:769
+#: ../woocommerce-gateway-payulatam.php:736
 msgid "Transaction IP"
 msgstr "IP de la transacción"
 
-#: ../woocommerce-gateway-payulatam.php:771
+#: ../woocommerce-gateway-payulatam.php:738
 msgid "Extra Data"
 msgstr "Datos extras"
 
-#: ../woocommerce-gateway-payulatam.php:844
+#: ../woocommerce-gateway-payulatam.php:811
 msgid "Error: Order Key does not match invoice."
 msgstr "Error: La llave de la Orden no coincide."
 
-#: ../woocommerce-gateway-payulatam.php:913
+#: ../woocommerce-gateway-payulatam.php:880
 msgid "Argentine Peso"
 msgstr "Peso Argentino"
 
-#: ../woocommerce-gateway-payulatam.php:914
+#: ../woocommerce-gateway-payulatam.php:881
 msgid "Brasilian Real"
 msgstr "Real Brasileño"
 
-#: ../woocommerce-gateway-payulatam.php:915
+#: ../woocommerce-gateway-payulatam.php:882
 msgid "Colombian Peso"
 msgstr "Peso Colombiano"
 
-#: ../woocommerce-gateway-payulatam.php:916
+#: ../woocommerce-gateway-payulatam.php:883
 msgid "Mexican Peso"
 msgstr "Peso Mexicano"
 
-#: ../woocommerce-gateway-payulatam.php:917
+#: ../woocommerce-gateway-payulatam.php:884
 msgid "Perubian New Sol"
 msgstr "Nuevo Sol Peruano"
 

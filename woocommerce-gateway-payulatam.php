@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce - PayU Latam Gateway
 Plugin URI: http://thecodeisintheair.com/wordpress-plugins/woocommerce-payu-latam-gateway-plugin/
 Description: PayU Latinoamerica Payment Gateway for WooCommerce. Recibe pagos en internet en latinoamérica desde cualquier parte del mundo. ¡La forma más rápida, sencilla y segura para vender y recibir pagos por internet!
-Version: 1.1.6
+Version: 1.1.7
 Author: Code is in the Air - Jairo Ivan Rondon Mejia
 Author URI: http://www.thecodeisintheair.com/
 License: GNU General Public License v3.0
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
 
 add_action('plugins_loaded', 'woocommerce_payulatam_init', 0);
-define('IMGDIR', WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) . '/assets/img/');
+define('PAYU_ASSETS', WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) . '/assets');
 
 function woocommerce_payulatam_init(){
 	if(!class_exists('WC_Payment_Gateway')) return;
@@ -27,53 +27,64 @@ function woocommerce_payulatam_init(){
 	 * PayU Gateway Class
      *
      * @access public
-     * @param 
-     * @return 
+     * @param
+     * @return
      */
 	class WC_payulatam extends WC_Payment_Gateway{
-		
+
 		public function __construct(){
 			global $woocommerce;
 			$this->load_plugin_textdomain();
 	        //add_action('init', array($this, 'load_plugin_textdomain'));
 
 			$this->id 					= 'payulatam';
-			$this->icon         		= IMGDIR . 'logo.png';
+			$this->icon_default   		= $this->get_country_icon(false);
 			$this->method_title 		= __('PayU Latam','payu-latam-woocommerce');
 			$this->method_description	= __("The easiest way to sell and recive payments online in latinamerica",'payu-latam-woocommerce');
 			$this->has_fields 			= false;
-			
+
 			$this->init_form_fields();
 			$this->init_settings();
 			$this->language 		= get_bloginfo('language');
 
-			$this->testmode 		= $this->settings['testmode'];
+			$this->testmode 		= $this->get_option( 'testmode' );
 			$this->testmerchant_id	= '500238';
 			$this->testaccount_id	= '500537';
 			$this->testapikey		= '6u39nqhq8ftd0hlvnjfs66eh8c';
 			$this->debug = "no";
-			
-			$this->title 			= $this->settings['title'];
-			$this->description 		= $this->settings['description'];
-			$this->merchant_id 		= ($this->testmode=='yes')?$this->testmerchant_id:$this->settings['merchant_id'];
-			$this->account_id 		= ($this->testmode=='yes')?$this->testaccount_id:$this->settings['account_id'];
-			$this->apikey 			= ($this->testmode=='yes')?$this->testapikey:$this->settings['apikey'];
-			$this->redirect_page_id = $this->settings['redirect_page_id'];
-			$this->endpoint 		= $this->settings['endpoint'];
-			$this->payu_language 	= $this->settings['payu_language'];
-			$this->taxes 			= $this->settings['taxes'];
-			$this->tax_return_base 	= $this->settings['tax_return_base'];
+
+			$this->show_methods		= $this->get_option( 'show_methods' );
+			$this->icon_checkout 	= $this->get_option( 'icon_checkout' );
+
+			if($this->show_methods=='yes'&&trim($this->get_option( 'icon_checkout' ))=='') {
+				$this->icon =  $this->icon_default;
+			}elseif(trim($this->get_option( 'icon_checkout' ))!=''){
+				$this->icon = $this->get_option( 'icon_checkout' );
+			}else{
+				$this->icon = $this->get_country_icon();
+			}
+
+			$this->title 			= $this->get_option( 'title' );
+			$this->description 		= $this->get_option( 'description' );
+			$this->merchant_id 		= ($this->testmode=='yes')?$this->testmerchant_id:$this->get_option( 'merchant_id' );
+			$this->account_id 		= ($this->testmode=='yes')?$this->testaccount_id:$this->get_option( 'account_id' );
+			$this->apikey 			= ($this->testmode=='yes')?$this->testapikey:$this->get_option( 'apikey' );
+			$this->redirect_page_id = $this->get_option( 'redirect_page_id' );
+			$this->endpoint 		= $this->get_option( 'endpoint' );
+			$this->payu_language 	= $this->get_option( 'payu_language' );
+			$this->taxes 			= $this->get_option( 'taxes' );
+			$this->tax_return_base 	= $this->get_option( 'tax_return_base' );
 			$this->currency 		= ($this->is_valid_currency())?get_woocommerce_currency():'USD';
 			$this->textactive 		= 0;
-			$this->form_method 		= $this->settings['form_method'];
+			$this->form_method 		= $this->get_option( 'form_method' );
 			$this->liveurl 			= 'https://gateway.payulatam.com/ppp-web-gateway/';
 			$this->testurl 			= 'https://stg.gateway.payulatam.com/ppp-web-gateway';
 
 			/* mesagges */
-			$this->msg_approved			= $this->settings['msg_approved'];
-			$this->msg_declined			= $this->settings['msg_declined'];
-			$this->msg_cancel 			= $this->settings['msg_cancel'];
-			$this->msg_pending			= $this->settings['msg_pending'];
+			$this->msg_approved			= $this->get_option( 'msg_approved' );
+			$this->msg_declined			= $this->get_option( 'msg_declined' );
+			$this->msg_cancel 			= $this->get_option( 'msg_cancel' );
+			$this->msg_pending			= $this->get_option( 'msg_pending' );
 
 			if ($this->testmode == "yes")
 				$this->debug = "yes";
@@ -91,13 +102,13 @@ function woocommerce_payulatam_init(){
 					$this->log = $woocommerce->logger();
 				}
 			}
-			
-					
+
+
 			add_action('payulatam_init', array( $this, 'pauylatam_successful_request'));
 			add_action( 'woocommerce_receipt_payulatam', array( $this, 'receipt_page' ) );
 			//update for woocommerce >2.0
 			add_action( 'woocommerce_api_' . strtolower( get_class( $this ) ), array( $this, 'check_payulatam_response' ) );
-			
+
 			if ( version_compare( WOOCOMMERCE_VERSION, '2.0.0', '>=' ) ) {
 				/* 2.0.0 */
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( &$this, 'process_admin_options' ) );
@@ -105,7 +116,7 @@ function woocommerce_payulatam_init(){
 				/* 1.6.6 */
 				add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
 			}
-			
+
 		}
 
 	    public function load_plugin_textdomain()
@@ -113,8 +124,20 @@ function woocommerce_payulatam_init(){
 			load_plugin_textdomain( 'payu-latam-woocommerce', false, dirname( plugin_basename( __FILE__ ) ) . "/languages" );
 	    }
 
+		/**
+		 * Show payment metods by country
+		 */
+
+		public function get_country_icon($default=true){
+			$country = '';
+			if(!$default)
+				$country = WC()->countries->get_base_country();
+
+			$icon = PAYU_ASSETS.'/img/payulogo'.$country.'.png';
+			return $icon;
+		}
     	/**
-		 * Check if Gateway can be display 
+		 * Check if Gateway can be display
 	     *
 	     * @access public
 	     * @return void
@@ -123,9 +146,9 @@ function woocommerce_payulatam_init(){
 			global $woocommerce;
 
 			if ( $this->enabled=="yes" ) :
-				
+
 				if ( !$this->is_valid_currency()) return false;
-				
+
 				if ( $woocommerce->version < '1.5.8' ) return false;
 
 				if ($this->testmode!='yes'&&(!$this->merchant_id || !$this->account_id || !$this->apikey )) return false;
@@ -135,7 +158,7 @@ function woocommerce_payulatam_init(){
 
 			return false;
 		}
-		
+
     	/**
 		 * Settings Options
 	     *
@@ -150,6 +173,20 @@ function woocommerce_payulatam_init(){
 					'label' 		=> __('Enable PayU Latam Payment Module.', 'payu-latam-woocommerce'),
 					'default' 		=> 'no',
 					'description' 	=> __('Show in the Payment List as a payment option', 'payu-latam-woocommerce')
+				),
+				'show_methods' => array(
+					'title' 		=> __('Mostrar Metodos', 'payu-latam-woocommerce'),
+					'type' 			=> 'checkbox',
+					'label' 		=> __('Mostrar metodos de pago por Pais.', 'payu-latam-woocommerce'),
+					'default' 		=> 'no',
+					'description' 	=> __('Mostrar imagen de los metodos de pago soportados por Pais.', 'payu-latam-woocommerce')
+				),
+      			'icon_checkout' => array(
+					'title' 		=> __('Logo en el checkout:', 'payu-latam-woocommerce'),
+					'type'			=> 'text',
+					'default'		=> $this->get_country_icon(),
+					'description' 	=> __('URL de la Imagen para mostrar en el carrro de compra.', 'payu-latam-woocommerce'),
+					'desc_tip' 		=> true
 				),
       			'title' => array(
 					'title' 		=> __('Title:', 'payu-latam-woocommerce'),
@@ -264,8 +301,8 @@ function woocommerce_payulatam_init(){
 					'desc_tip' 		=> true
                 ),
 			);
-                
-		} 
+
+		}
 
         /**
          * Generate Admin Panel Options
@@ -274,7 +311,7 @@ function woocommerce_payulatam_init(){
 	     * @return string
          **/
 		public function admin_options(){
-			echo '<h3>'.__('PayU Latam', 'payu-latam-woocommerce').'</h3>';
+			echo '<img src="'.$this->get_country_icon().'" alt="PayU" width="80"><h3>'.__('PayU Latam', 'payu-latam-woocommerce').'</h3>';
 			echo '<p>'.__('The easiest way to sell and recive payments online in latinamerica', 'payu-latam-woocommerce').'</p>';
 			echo '<table class="form-table">';
 			// Generate the HTML For the settings form.
@@ -312,7 +349,7 @@ function woocommerce_payulatam_init(){
 			global $woocommerce;
 			$order = new WC_Order( $order_id );
 			$txnid = $order->order_key;
-			
+
 			$redirect_url = ($this->redirect_page_id=="" || $this->redirect_page_id==0)?get_site_url() . "/":get_permalink($this->redirect_page_id);
 			//For wooCoomerce 2.0
 			$redirect_url = add_query_arg( 'wc-api', get_class( $this ), $redirect_url );
@@ -320,11 +357,11 @@ function woocommerce_payulatam_init(){
 			$redirect_url = add_query_arg( '', $this->endpoint, $redirect_url );
 
 			$productinfo = "Order $order_id";
-			
+
 				$str = "$this->apikey~$this->merchant_id~$txnid~$order->order_total~$this->currency";
 				$hash = strtolower(md5($str));
-			
-			
+
+
 			$payulatam_args = array(
 				'merchantId' 		=> $this->merchant_id,
 				'accountId' 		=> $this->account_id,
@@ -464,7 +501,7 @@ function woocommerce_payulatam_init(){
 			} else {
 				wp_die( __("PayU Latam Request Failure", 'payu-latam-woocommerce') );
 	   		}
-		
+
 		}
 
 		/**
@@ -518,12 +555,12 @@ function woocommerce_payulatam_init(){
 						    	$order->update_status( 'on-hold', sprintf( __( 'Validation error: PayU Latam amounts do not match (gross %s).', 'payu-latam-woocommerce'), $posted['TX_VALUE'] ) );
 
 								$this->msg['message'] = sprintf( __( 'Validation error: PayU Latam amounts do not match (gross %s).', 'payu-latam-woocommerce'), $posted['TX_VALUE'] );
-								$this->msg['class'] = 'woocommerce-error';	
+								$this->msg['class'] = 'woocommerce-error';
 
 						    	exit;
 						    }
 
-						    // Validate Merchand id 
+						    // Validate Merchand id
 							if ( strcasecmp( trim( $posted['merchantId'] ), trim( $this->merchant_id ) ) != 0 ) {
 								if ( 'yes' == $this->debug )
 									$this->log->add( 'payulatam', __("Payment was made to another merchantId: {$posted['merchantId']} our merchantId is {$this->merchant_id }", 'payu-latam-woocommerce') );
@@ -597,7 +634,7 @@ function woocommerce_payulatam_init(){
 								$this->msg['class'] = 'woocommerce-error';
 			            break;
 			        }
-		        	
+
 		        } else if(!empty($posted['transactionState'])) {
 		        	$codes=array('1' => 'CAPTURING_DATA' ,'2' => 'NEW' ,'101' => 'FX_CONVERTED' ,'102' => 'VERIFIED' ,'103' => 'SUBMITTED' ,'4' => 'APPROVED' ,'6' => 'DECLINED' ,'104' => 'ERROR' ,'7' => 'PENDING' ,'5' => 'EXPIRED'  );
 		        	$state=$posted['transactionState'];
@@ -628,12 +665,12 @@ function woocommerce_payulatam_init(){
 						    	$order->update_status( 'on-hold', sprintf( __( 'Validation error: PayU Latam amounts do not match (gross %s).', 'payu-latam-woocommerce'), $posted['TX_VALUE'] ) );
 
 								$this->msg['message'] = sprintf( __( 'Validation error: PayU Latam amounts do not match (gross %s).', 'payu-latam-woocommerce'), $posted['TX_VALUE'] );
-								$this->msg['class'] = 'woocommerce-error';	
+								$this->msg['class'] = 'woocommerce-error';
 
 						    	exit;
 						    }
 
-						    // Validate Merchand id 
+						    // Validate Merchand id
 							if ( strcasecmp( trim( $posted['merchantId'] ), trim( $this->merchant_id ) ) != 0 ) {
 								if ( 'yes' == $this->debug )
 									$this->log->add( 'payulatam', __("Payment was made to another merchantId: {$posted['merchantId']} our merchantId is {$this->merchant_id }", 'payu-latam-woocommerce') );
@@ -710,7 +747,7 @@ function woocommerce_payulatam_init(){
 
 			        if ( 'yes' == $this->debug )
 			        	$this->log->add( 'payulatam', 'Payment status: ' . $codes[$state] );
-		        
+
 		        	// We are here so lets check status and do actions
 			        switch ( $codes[$state] ) {
 			            case 'APPROVED' :
@@ -738,12 +775,12 @@ function woocommerce_payulatam_init(){
 						    	$order->update_status( 'on-hold', sprintf( __( 'Validation error: PayU Latam amounts do not match (gross %s).', 'payu-latam-woocommerce'), $posted['value'] ) );
 
 								$this->msg['message'] = sprintf( __( 'Validation error: PayU Latam amounts do not match (gross %s).', 'payu-latam-woocommerce'), $posted['value'] );
-								$this->msg['class'] = 'woocommerce-error';	
+								$this->msg['class'] = 'woocommerce-error';
 
 						    	exit;
 						    }
 
-						    // Validate Merchand id 
+						    // Validate Merchand id
 							if ( strcasecmp( trim( $posted['merchant_id'] ), trim( $this->merchant_id ) ) != 0 ) {
 								if ( 'yes' == $this->debug )
 									$this->log->add( 'payulatam', __("Payment was made to another merchantId: {$posted['merchant_id']} our merchantId is {$this->merchant_id }", 'payu-latam-woocommerce') );
@@ -826,10 +863,10 @@ function woocommerce_payulatam_init(){
 			$custom =  $posted['order_id'];
 
 	    	// Backwards comp for IPN requests
-	    	
+
 		    	$order_id = (int) $custom;
 		    	$order_key = ($posted['referenceCode'])?$posted['referenceCode']:$posted['reference_sale'];
-	    	
+
 			$order = new WC_Order( $order_id );
 
 			if ( ! isset( $order->id ) ) {
@@ -874,7 +911,7 @@ function woocommerce_payulatam_init(){
 
 			return true;
 		}
-		
+
 		/**
 		 * Get pages for return page setting
 		 *
@@ -902,8 +939,10 @@ function woocommerce_payulatam_init(){
         	return $page_list;
     		}
 		}
+
+
 		/**
-		 * Add all currencys supported by PayU Latem so it can be display 
+		 * Add all currencys supported by PayU Latem so it can be display
 		 * in the woocommerce settings
 		 *
 		 * @access public
@@ -918,7 +957,7 @@ function woocommerce_payulatam_init(){
 			return $currencies;
 		}
 		/**
-		 * Add simbols for all currencys in payu latam so it can be display 
+		 * Add simbols for all currencys in payu latam so it can be display
 		 * in the woocommerce settings
 		 *
 		 * @access public
@@ -946,7 +985,7 @@ function woocommerce_payulatam_init(){
 	}
 
 	/**
-	 * Filter simbol for currency currently active so it can be display 
+	 * Filter simbol for currency currently active so it can be display
 	 * in the front end
      *
      * @access public
