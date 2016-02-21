@@ -47,44 +47,44 @@ function woocommerce_payulatam_init(){
 			$this->init_settings();
 			$this->language 		= get_bloginfo('language');
 
-			$this->testmode 		= $this->settings['testmode'];
+			$this->testmode 		= $this->get_option( 'testmode' );
 			$this->testmerchant_id	= '500238';
 			$this->testaccount_id	= '500537';
 			$this->testapikey		= '6u39nqhq8ftd0hlvnjfs66eh8c';
 			$this->debug = "no";
 
-			$this->show_methods		= $this->settings['show_methods'];
-			$this->icon_checkout 	= $this->settings['icon_checkout'];
+			$this->show_methods		= $this->get_option( 'show_methods' );
+			$this->icon_checkout 	= $this->get_option( 'icon_checkout' );
 
-			if($this->show_methods=='yes'&&trim($this->settings['icon_checkout'])=='') {
+			if($this->show_methods=='yes'&&trim($this->get_option( 'icon_checkout' ))=='') {
 				$this->icon =  $this->icon_default;
-			}elseif(trim($this->settings['icon_checkout'])!=''){
-				$this->icon = $this->settings['icon_checkout'];
+			}elseif(trim($this->get_option( 'icon_checkout' ))!=''){
+				$this->icon = $this->get_option( 'icon_checkout' );
 			}else{
 				$this->icon = $this->get_country_icon();
 			}
 
-			$this->title 			= $this->settings['title'];
-			$this->description 		= $this->settings['description'];
-			$this->merchant_id 		= ($this->testmode=='yes')?$this->testmerchant_id:$this->settings['merchant_id'];
-			$this->account_id 		= ($this->testmode=='yes')?$this->testaccount_id:$this->settings['account_id'];
-			$this->apikey 			= ($this->testmode=='yes')?$this->testapikey:$this->settings['apikey'];
-			$this->redirect_page_id = $this->settings['redirect_page_id'];
-			$this->endpoint 		= $this->settings['endpoint'];
-			$this->payu_language 	= $this->settings['payu_language'];
-			$this->taxes 			= $this->settings['taxes'];
-			$this->tax_return_base 	= $this->settings['tax_return_base'];
+			$this->title 			= $this->get_option( 'title' );
+			$this->description 		= $this->get_option( 'description' );
+			$this->merchant_id 		= ($this->testmode=='yes')?$this->testmerchant_id:$this->get_option( 'merchant_id' );
+			$this->account_id 		= ($this->testmode=='yes')?$this->testaccount_id:$this->get_option( 'account_id' );
+			$this->apikey 			= ($this->testmode=='yes')?$this->testapikey:$this->get_option( 'apikey' );
+			$this->redirect_page_id = $this->get_option( 'redirect_page_id' );
+			$this->endpoint 		= $this->get_option( 'endpoint' );
+			$this->payu_language 	= $this->get_option( 'payu_language' );
+			$this->taxes 			= $this->get_option( 'taxes' );
+			$this->tax_return_base 	= $this->get_option( 'tax_return_base' );
 			$this->currency 		= ($this->is_valid_currency())?get_woocommerce_currency():'USD';
 			$this->textactive 		= 0;
-			$this->form_method 		= $this->settings['form_method'];
+			$this->form_method 		= $this->get_option( 'form_method' );
 			$this->liveurl 			= 'https://gateway.payulatam.com/ppp-web-gateway/';
 			$this->testurl 			= 'https://stg.gateway.payulatam.com/ppp-web-gateway';
 
 			/* mesagges */
-			$this->msg_approved			= $this->settings['msg_approved'];
-			$this->msg_declined			= $this->settings['msg_declined'];
-			$this->msg_cancel 			= $this->settings['msg_cancel'];
-			$this->msg_pending			= $this->settings['msg_pending'];
+			$this->msg_approved			= $this->get_option( 'msg_approved' );
+			$this->msg_declined			= $this->get_option( 'msg_declined' );
+			$this->msg_cancel 			= $this->get_option( 'msg_cancel' );
+			$this->msg_pending			= $this->get_option( 'msg_pending' );
 
 			if ($this->testmode == "yes")
 				$this->debug = "yes";
@@ -129,6 +129,7 @@ function woocommerce_payulatam_init(){
 		 */
 
 		public function get_country_icon($default=true){
+			$country = '';
 			if(!$default)
 				$country = WC()->countries->get_base_country();
 
